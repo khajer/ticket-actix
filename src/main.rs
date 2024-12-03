@@ -1,8 +1,12 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
+#[get("/version")]
+async fn version() -> impl Responder {
+    HttpResponse::Ok().body("version 1.0.0")
+}
 #[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+async fn index() -> impl Responder {
+    HttpResponse::Ok().body("hello, world")
 }
 
 #[post("/echo")]
@@ -18,9 +22,10 @@ async fn manual_hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(hello)
+            .service(version)
+            .service(index)
             .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+            .route("/hello", web::get().to(manual_hello))
     })
     .bind(("0.0.0.0", 8080))?
     .run()
