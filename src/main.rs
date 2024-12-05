@@ -6,7 +6,7 @@ use std::env;
 
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
-    
+
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     PgConnection::establish(&database_url)
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
@@ -32,6 +32,7 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("server is running : http://localhost:8080");
     HttpServer::new(|| {
         App::new()
             .service(version)
